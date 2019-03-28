@@ -7,27 +7,13 @@ costs=minimumCost(A,B);
 sortedCosts=sortrows(costs')';
 sortedCustomers=sortedCosts(2,:);
 reverseCustomers=0;
-needNewRoute=0;
 
 while not(isempty(sortedCustomers))
-    routes(r+1,1:length(route))=route;
     r=r+1;
-    firstCustomer=0;
     routeCapacity=capacity;
-    for i=1:length(sortedCustomers)
-        j=sortedCustomers(i);
-        if(B(1,j+1)<A(j,5))&&(A(j,3)<routeCapacity)
-            firstCustomer=j;
-            sortedCustomers(i)=[];
-            break
-        end
-    end
-    if (firstCustomer == 0)
-        fprintf ('Solu玢o inexistente');
-        routes=0;
-        return
-    end
-    route = firstCustomer;
+    j=sortedCustomers(1);%firstCustomer
+    sortedCustomers(1)=[];
+    route=j;
     routeCapacity = routeCapacity - A(j,3);
     i=length(sortedCustomers);
     reverseCustomers = fliplr(sortedCustomers);
@@ -46,9 +32,6 @@ while not(isempty(sortedCustomers))
                 reverseCustomers = removeElement(reverseCustomers, i, 1);
             end
             i = i-1;
-            if (i==0)
-                needNewRoute=1;
-            end
             sortedCustomers= fliplr(reverseCustomers);
         else
             routes(r,1:length(route))=route;
@@ -58,5 +41,6 @@ while not(isempty(sortedCustomers))
     end
     if(isempty(sortedCustomers))
         routes(r,1:length(route))=route;
-    end        
+    end  
+    routes(r,1:length(route))=route;
 end
